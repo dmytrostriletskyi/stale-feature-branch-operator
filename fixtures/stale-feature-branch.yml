@@ -1,0 +1,9 @@
+---
+apiVersion: feature-branch.dmytrostriletskyi.com/v1
+kind: StaleFeatureBranch
+metadata:
+  name: stale-feature-branch
+spec:
+  namespaceSubstring: -pr-
+  afterDaysWithoutDeploy: 1 
+  checkEveryMinutes: 1

@@ -1,0 +1,107 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: project-pr-2
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: project-pr-2
+  name: project-pr-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project-pr-2
+  template:
+    metadata:
+      labels:
+        app: project-pr-2
+    spec:
+      containers:
+        - name: project-pr-2
+          image: nginx:1.19.0
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "10Mi"
+            limits:
+              cpu: "150m"
+              memory: "150Mi"
+          ports:
+            - containerPort: 80
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: project-pr-2
+  name: project-pr-2
+spec:
+  selector:
+    app: project-pr-2
+  ports:
+    - port: 80
+      targetPort: 80
+
+---
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2beta2
+metadata:
+  namespace: project-pr-2
+  name: project-pr-2
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: project-pr-2
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: project-pr-2
+  namespace: project-pr-2
+type: Opaque
+data:
+  username: YWRtaW4=
+  password: MWYyZDFlMmU2N2Rm
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: project-pr-2
+  namespace: project-pr-2
+data:
+  game.properties: |
+    enemies=aliens
+
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  namespace: project-pr-2
+  name: project-pr-2
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+spec:
+  rules:
+    - host: project-pr-2.domain.com
+      http:
+        paths:
+          - path: /v1(/|$)(.*)
+            backend:
+              serviceName: project-pr-2
+              servicePort: 80
