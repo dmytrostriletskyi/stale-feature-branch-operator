@@ -459,19 +459,19 @@ apiVersion: apps/v1
 To build, use the following command replacing registry, project name and version if needed:
 
 ```bash
-$ docker build --tag dmytrostriletskyi/stale-feature-branch-operator:v0.0.1 -f ops/Dockerfile .
+$ docker build --tag dmytrostriletskyi/stale-feature-branch-operator:v$(cat .project-version) -f ops/Dockerfile .
 ```
 
 To push,  use the following command replacing registry, project name and version if needed:
 
 ```bash
-$ docker push dmytrostriletskyi/stale-feature-branch-operator:v0.0.1
+$ docker push dmytrostriletskyi/stale-feature-branch-operator:v$(cat .project-version)
 ```
 
 If you want to run it locally, do the following command:
 
 ```bash
-$ docker run dmytrostriletskyi/stale-feature-branch-operator:v0.0.1 && \
+$ docker run dmytrostriletskyi/stale-feature-branch-operator:v$(cat .project-version) && \
       --name stale-feature-branch-operator
 ```
 
@@ -479,10 +479,18 @@ $ docker run dmytrostriletskyi/stale-feature-branch-operator:v0.0.1 && \
 
 #### Code Style
 
-Ensure, your code is formatted with the following tool:
+Ensure, your code is formatted with the following command:
 
 ```bash
 $ go fmt ./...
+```
+
+#### Testing
+
+Ensure, you code is covered with tests using the following command:
+
+```
+$ go test ./... -v -count=1
 ```
 
 #### Custom Resource Definitions

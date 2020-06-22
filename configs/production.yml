@@ -88,7 +88,7 @@ spec:
             - name: OPERATOR_NAME
               value: "stale-feature-branch-operator"
             - name: IS_DEBUG
-              value: "true"
+              value: "false"
             - name: POD_NAME
               valueFrom:
                 fieldRef:
