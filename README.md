@@ -81,7 +81,7 @@ Define the project's version with the operator version's environment variable. T
 [here](https://github.com/dmytrostriletskyi/stale-feature-branch-operator/releases).
 
 ```bash
-$ export OPERATOR_VERSION=0.0.1
+$ export OPERATOR_VERSION=0.0.2
 ```
 
 Once you applied the configurations with the command below, it will create the `StaleFeatureBranch` resource, install
@@ -162,7 +162,7 @@ namespaces will be deleted without checking for an oldness:
 Copy the production configurations to your personal computer:
 
 ```bash
-$ export OPERATOR_VERSION=0.0.1
+$ export OPERATOR_VERSION=0.0.2
 $ curl https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/v${OPERATOR_VERSION}/configs/production.yml > \
       stale-feature-branch-production-configs.yml
 ```
