@@ -11,11 +11,11 @@ import (
 	"os"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+
 	"strings"
 	"time"
 )
 
-var isDebug = os.Getenv("IS_DEBUG")
 var _ reconcile.Reconciler = &ReconcileStaleFeatureBranch{}
 
 type ReconcileStaleFeatureBranch struct {
@@ -36,7 +36,7 @@ func (r *ReconcileStaleFeatureBranch) Reconcile(request reconcile.Request) (reco
 		"namespaceSubstring", staleFeatureBranch.Spec.NamespaceSubstring,
 		"afterDaysWithoutDeploy", staleFeatureBranch.Spec.AfterDaysWithoutDeploy,
 		"checkEveryMinutes", staleFeatureBranch.Spec.CheckEveryMinutes,
-		"isDebug", isDebug,
+		"isDebug", os.Getenv("IS_DEBUG"),
 	)
 
 	var allNamespaces corev1.NamespaceList
@@ -72,7 +72,7 @@ func (r *ReconcileStaleFeatureBranch) IsNamespaceToBeDeleted(staleFeatureBranch 
 		return false
 	}
 
-	if InDebugMode == isDebug {
+	if InDebugMode == os.Getenv("IS_DEBUG") {
 		logger.Info(
 			"Namespace should be deleted due to debug mode is enabled.",
 			"namespaceName", namespace.Name,
