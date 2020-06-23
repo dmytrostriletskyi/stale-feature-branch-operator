@@ -1,6 +1,6 @@
 package stalefeaturebranch
 
 const (
-	InDebugMode     = "true"
-	HoursInDay  int = 24
+	debugIsEnabled     = "true"
+	HoursInDay     int = 24
 )
