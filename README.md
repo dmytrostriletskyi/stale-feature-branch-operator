@@ -1,5 +1,8 @@
 Delete stale feature branches in your `Kubernetes` cluster.
 
+[![Release](https://img.shields.io/github/release/dmytrostriletskyi/stale-feature-branch-operator.svg)](https://github.com/dmytrostriletskyi/stale-feature-branch-operator/releases)
+[![Build Status](https://travis-ci.com/dmytrostriletskyi/stale-feature-branch-operator.svg?branch=master)](https://travis-ci.com/dmytrostriletskyi/stale-feature-branch-operator)
+
 * [Getting Started](#getting-started)
   * [Feature Branch](#feature-branch)
   * [Motivation](#motivation)

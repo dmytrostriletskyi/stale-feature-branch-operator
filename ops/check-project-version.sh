@@ -6,6 +6,11 @@
 SUCCESSFUL_EXIST_CODE=0
 FAILED_EXIST_CODE=1
 
+if [[ $TRAVIS_BRANCH == 'master' ]]; then
+  echo "No checks for a project version when it's master branch."
+  exit "$((SUCCESSFUL_EXIST_CODE))"
+fi
+
 if ! [[ $(git diff origin/master...HEAD ':!ops/check-project-version.sh' | grep "b/.project-version") ]]; then
   echo "You forgot to adjust file .project-version according to semantic versioning."
   exit "$((FAILED_EXIST_CODE))"
