@@ -17,6 +17,7 @@ Delete stale feature branches in your `Kubernetes` cluster.
   * [Docker Image](#docker-image)
   * [Contributing](#contributing)
     * [Code Style](#code-style)
+    * [Testing](#testing)
     * [Custom Resource Definitions](#custom-resource-definitions)
 
 ## Getting Started
@@ -77,21 +78,16 @@ for development and maintenance.
 
 ## Installation
 
-Define the project's version with the operator version's environment variable. The full list of versions is available
-[here](https://github.com/dmytrostriletskyi/stale-feature-branch-operator/releases).
-
-```bash
-$ export OPERATOR_VERSION=0.0.3
-```
-
-Once you applied the configurations with the command below, it will create the `StaleFeatureBranch` resource, install
-the operator into `stale-feature-branch` namespace, create a [service account](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/)
+Apply the latest release configurations with the command below, it will create the `StaleFeatureBranch` resource,
+install the operator into `stale-feature-branch-operator` namespace, create a [service account](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/)
 and necessary [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac) roles.
 
 ```bash
 $ kubectl apply -f \
-      https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/v${OPERATOR_VERSION}/configs/production.yml
+      https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/master/configs/production.yml
 ```
+
+If you need any previous release, full list of versions is available [here](https://github.com/dmytrostriletskyi/stale-feature-branch-operator/releases).
 
 ## Usage
 
@@ -156,16 +152,17 @@ Switched to context "minikube".
 
 Applied configurations in the same way you apply it to a production cluster. But as it's production configurations, they
 will expect old namespaces present in your cluster. Our cluster is fresh, and no old resources are present there.
-As you do not have them, the operator allows you to specify the debug setting. If the debug setting is enabled, all
+As you do not have them, the operator allows you to specify the debug parameter. If the debug is enabled, all
 namespaces will be deleted without checking for an oldness:
 
 Copy the production configurations to your personal computer:
 
 ```bash
-$ export OPERATOR_VERSION=0.0.3
-$ curl https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/v${OPERATOR_VERSION}/configs/production.yml > \
+$ curl https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/master/configs/production.yml > \
       stale-feature-branch-production-configs.yml
 ```
+
+If you need any previous release, full list of versions is available [here](https://github.com/dmytrostriletskyi/stale-feature-branch-operator/releases).
 
 Enable debug by changing the setting. For `Linux` it's:
 
@@ -218,8 +215,8 @@ as well (deployment, service, secrets, etc.).:
 
 ```bash
 $ kubectl apply \
-      -f https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/v${OPERATOR_VERSION}/fixtures/first-feature-branch.yml \
-      -f https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/v${OPERATOR_VERSION}/fixtures/second-feature-branch.yml
+      -f https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/master/fixtures/first-feature-branch.yml \
+      -f https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/master/fixtures/second-feature-branch.yml
 namespace/project-pr-1 created
 deployment.apps/project-pr-1 created
 service/project-pr-1 created
@@ -256,7 +253,7 @@ we create `StaleFeatureBranch` configurations, the namespaces will be deleted im
 
 ```bash
 $ kubectl apply -f \
-      https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/v${OPERATOR_VERSION}/fixtures/stale-feature-branch.yml
+      https://raw.githubusercontent.com/dmytrostriletskyi/stale-feature-branch-operator/master/fixtures/stale-feature-branch.yml
 ```
 
 After, check the logs of the operator, and you will that namespaces are deleted:

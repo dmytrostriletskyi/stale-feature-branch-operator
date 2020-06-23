@@ -27,7 +27,7 @@ func (r *ReconcileStaleFeatureBranch) Reconcile(request reconcile.Request) (reco
 	var staleFeatureBranch featurebranchv1.StaleFeatureBranch
 
 	if err := r.Client.Get(context.TODO(), request.NamespacedName, &staleFeatureBranch); err != nil {
-		logger.Error(err, "Unable to fetch a stale feature branch.", request.NamespacedName)
+		logger.Error(err, "Unable to fetch a stale feature branch.")
 		return reconcile.Result{}, nil
 	}
 
@@ -55,7 +55,7 @@ func (r *ReconcileStaleFeatureBranch) Reconcile(request reconcile.Request) (reco
 			)
 
 			if err := r.Client.Delete(context.TODO(), &namespace); err != nil {
-				logger.Error(err, "An error occurred while delete a namespace.", request.NamespacedName)
+				logger.Error(err, "An error occurred while delete a namespace.")
 				return reconcile.Result{}, err
 			}
 
@@ -63,7 +63,13 @@ func (r *ReconcileStaleFeatureBranch) Reconcile(request reconcile.Request) (reco
 		}
 	}
 
-	requeueIn, _ := time.ParseDuration(strconv.Itoa(staleFeatureBranch.Spec.CheckEveryMinutes) + "m")
+	requeueIn, err := time.ParseDuration(strconv.Itoa(staleFeatureBranch.Spec.CheckEveryMinutes) + "m")
+
+	if err != nil {
+		logger.Error(err, "Unable to process check every minutes parameter.")
+		return reconcile.Result{}, nil
+	}
+
 	return reconcile.Result{RequeueAfter: requeueIn}, nil
 }
 
@@ -72,7 +78,7 @@ func (r *ReconcileStaleFeatureBranch) IsNamespaceToBeDeleted(staleFeatureBranch 
 		return false
 	}
 
-	if InDebugMode == os.Getenv("IS_DEBUG") {
+	if debugIsEnabled == os.Getenv("IS_DEBUG") {
 		logger.Info(
 			"Namespace should be deleted due to debug mode is enabled.",
 			"namespaceName", namespace.Name,
