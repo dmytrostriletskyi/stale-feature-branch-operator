@@ -2,18 +2,18 @@ package stalefeaturebranch
 
 import (
 	"context"
+	"strconv"
+	"strings"
+	"time"
+
 	featurebranchv1 "github.com/dmytrostriletskyi/stale-feature-branch-operator/pkg/apis/featurebranch/v1"
+
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"strconv"
-
 	"k8s.io/apimachinery/pkg/runtime"
 	"os"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-
-	"strings"
-	"time"
 )
 
 var _ reconcile.Reconciler = &ReconcileStaleFeatureBranch{}
@@ -86,10 +86,11 @@ func (r *ReconcileStaleFeatureBranch) IsNamespaceToBeDeleted(staleFeatureBranch 
 		return true
 	}
 
-	differenceInDaysAsFloat := metav1.Now().Sub(namespace.CreationTimestamp.Time).Hours() / float64(HoursInDay)
-	differenceInDaysAsInteger := int(differenceInDaysAsFloat)
+	namespaceExistenceInHoursAsFloat := metav1.Now().Sub(namespace.CreationTimestamp.Time).Hours()
+	namespaceExistenceInHoursAsInteger := int(namespaceExistenceInHoursAsFloat)
+	afterHoursWithoutDeployAsInteger := staleFeatureBranch.Spec.AfterDaysWithoutDeploy * HoursInDay
 
-	if differenceInDaysAsInteger > staleFeatureBranch.Spec.AfterDaysWithoutDeploy {
+	if namespaceExistenceInHoursAsInteger >= afterHoursWithoutDeployAsInteger {
 		return true
 	}
 

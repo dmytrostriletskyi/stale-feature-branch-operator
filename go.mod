@@ -3,6 +3,7 @@ module github.com/dmytrostriletskyi/stale-feature-branch-operator
 go 1.13
 
 require (
+	bou.ke/monkey v1.0.2
 	github.com/operator-framework/operator-sdk v0.18.1
 	github.com/stretchr/testify v1.6.1
 	k8s.io/api v0.18.2
