@@ -2,14 +2,15 @@ package main
 
 import (
 	"context"
+	"os"
+	"runtime"
+
 	"github.com/dmytrostriletskyi/stale-feature-branch-operator/pkg/apis"
 	"github.com/dmytrostriletskyi/stale-feature-branch-operator/pkg/controllers"
 	"github.com/operator-framework/operator-sdk/pkg/leader"
 	"github.com/operator-framework/operator-sdk/pkg/log/zap"
 	sdkVersion "github.com/operator-framework/operator-sdk/version"
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
-	"os"
-	"runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
