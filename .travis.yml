@@ -7,6 +7,9 @@ go:
 services:
   - docker
 
+# https://github.com/travis-ci/travis-ci/issues/8051
+if: tag IS blank
+
 before_script:
   - git remote set-branches --add origin master
   - git fetch
