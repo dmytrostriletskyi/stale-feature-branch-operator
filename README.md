@@ -4,6 +4,7 @@ Delete stale feature branches in your `Kubernetes` cluster.
 [![Build Status](https://travis-ci.com/dmytrostriletskyi/stale-feature-branch-operator.svg?branch=master)](https://travis-ci.com/dmytrostriletskyi/stale-feature-branch-operator)
 
 * [Getting Started](#getting-started)
+  * [End Users](#end-users)
   * [Feature Branch](#feature-branch)
   * [Motivation](#motivation)
 * [Installation](#installation)
@@ -24,6 +25,12 @@ Delete stale feature branches in your `Kubernetes` cluster.
     * [Custom Resource Definitions](#custom-resource-definitions)
 
 ## Getting Started
+
+### End Users
+
+An end user of the project is a `Kubernetes` cluster's administrator which is involved into `Continuous Integration`
+process and looking for a solution of the problem of feature branches' that live in the cluster after its pull request
+is already merged.
 
 ### Feature Branch
 
@@ -51,6 +58,9 @@ metadata:
   namespace: github-back-end-pr-17
 ...
 ```
+
+**To summarize what described above, the project helps you to delete namespaces as a namespace equals to all resources
+that belong to a feature branch in `Kubernetes` cluster.**
 
 More information about implementation of feature branches using namespaces is [here](https://itnext.io/feature-deployments-in-kubernetes-c74bdcff0d8e)
 and [here](https://codefresh.io/kubernetes-tutorial/dynamically-creating-k8s-namespaces-every-branch-pull-request-2/).
