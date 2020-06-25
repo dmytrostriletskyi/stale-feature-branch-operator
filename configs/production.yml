@@ -82,7 +82,7 @@ spec:
       serviceAccountName: stale-feature-branch-operator
       containers:
         - name: stale-feature-branch-operator
-          image: dmytrostriletskyi/stale-feature-branch-operator:v0.0.7
+          image: dmytrostriletskyi/stale-feature-branch-operator:v0.0.8
           imagePullPolicy: Always
           env:
             - name: OPERATOR_NAME
