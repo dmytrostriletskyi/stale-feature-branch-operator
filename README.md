@@ -7,6 +7,7 @@ Delete stale feature branches in your `Kubernetes` cluster.
   * [End Users](#end-users)
   * [Feature Branch](#feature-branch)
   * [Motivation](#motivation)
+  * [Alternatives](#alternatives)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Guideline](#development)
@@ -67,27 +68,48 @@ and [here](https://codefresh.io/kubernetes-tutorial/dynamically-creating-k8s-nam
 
 ### Motivation
 
-To understand the motivation of the project, let's check common continuous integration lifecycle for a pull request:
+To understand the motivation of the project, let's check common continuous integration for a pull request and its
+lifecycle:
 
 1. A new commit is pushed to a branch.
 2. Code style and tests are passed.
 3. A feature branch's configurations are applied.
 4. The feature branch's namespace and other resources are running in a cluster.
-5. The branch is merged to a production branch.
+5. The branch is merged to a production branch (for instance, `master`).
 
 One important thing is that good lifecycle will delete all existing feature branch resources for a particular commit
 **before** applying configurations for the new commit. It's needed to ensure that each commit's deployment is done from
 a clear state.
  
 But after the branch is merged to the production branch, all feature branch's resources are still running in a cluster
-and occupy its resources. **What are the ways to delete them?**
+and occupy its resources. **What are the ways to delete them? Check [alternatives](#alternatives) section.** 
 
-* On each master branch build, detect which branch was merged last (by fetching commits history).
-* Write a service that receives branches' merging events.
-* Create own `Cronjob`.
+### Alternatives
 
-All of them are not ideal as have the following disadvantages: master branch builds may fail, own software takes time
-for development and maintenance.
+These are the ways to delete feature branch's resources after its branch is merged to production branch. All of them 
+are not ideal as well as this project. Each of you can choose any approach that mostly fits your case.
+
+1. On each production branch build, detect which branch was merged last and delete. 
+
+    * It can be done only by fetching commits history. In this case, a commit should contain number of its pull request.
+    * Sometimes production branch's builds fail on the stage you do not want to rebuild. For instance, all important
+    stages are passed, but a notification stage failed, and your clean up stage is after the notification one. So,
+    unlikely you rebuild it. Also, the logic of deletion **in master branch pipeline** doesn't logically fit all other
+    instructions such as deploy.
+ 
+2. Integrate a webhook to your continuous integration system ([example](https://github.community/t/trigger-jenkins-job-when-a-pull-request-is-merged-to-a-branch/1169/3)).
+
+    * It may not fit your development principle. For instance, [Jenkins](https://www.jenkins.io/) support the only
+      one type of pipelines where you can have your pipeline's configuration file to be uploaded to a source code
+      server (and follow `infrastructure as code` process). So, to create a webhook, you will need [separate
+      scripts that process webhook's data](https://stackoverflow.com/questions/31407332/how-to-process-a-github-webhook-payload-in-jenkins)
+      which will not be uploaded to the source code server and should be maintained in a user interface.
+
+3. Create own `Cronjob` resource in a `Kubernetes` cluster. 
+
+    * That also requires development and maintenance. Especially, moving this from one company to another one. 
+    * Furthermore, this project works almost in the same principle as `Cronjob` resource, so you lose nothing while
+      reusing.
 
 ## Installation
 
