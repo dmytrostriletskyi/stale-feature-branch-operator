@@ -7,7 +7,7 @@ require (
 	github.com/operator-framework/operator-sdk v0.18.1
 	github.com/stretchr/testify v1.6.1
 	k8s.io/api v0.18.2
-	k8s.io/apimachinery v0.18.2
+	k8s.io/apimachinery v0.18.8
 	k8s.io/client-go v12.0.0+incompatible
 	sigs.k8s.io/controller-runtime v0.6.0
 )
